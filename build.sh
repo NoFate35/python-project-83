@@ -1,4 +1,4 @@
 curl -LsSf https://astral.sh/uv/install.sh | sh
-exec bash
+reset
 source $HOME/.local/bin/env (sh, bash, zsh)
 make install
