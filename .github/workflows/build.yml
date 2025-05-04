@@ -27,5 +27,4 @@ jobs:
         with:
           args: >
             -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.projectKey=nofate35
             -Dsonar.sources=page_analyzer/
