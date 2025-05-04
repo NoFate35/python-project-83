@@ -27,3 +27,4 @@ jobs:
         with:
           args: >
             -Dsonar.python.coverage.reportPaths=coverage.xml
+            sonar.coverage.exclusions=tests
