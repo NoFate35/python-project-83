@@ -18,3 +18,6 @@ render-start:
 test-coverage:
 	uv run pytest --cov=page_analyzer --cov-report xml
 
+lint:
+	uv run flake8  page_analyzer
+

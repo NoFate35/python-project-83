@@ -11,3 +11,8 @@ dependencies = [
     "pytest-cov>=6.1.1",
     "python-dotenv>=1.1.0",
 ]
+
+[dependency-groups]
+dev = [
+    "flake8>=7.2.0",
+]
