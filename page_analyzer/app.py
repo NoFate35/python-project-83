@@ -1,6 +1,6 @@
 import psycopg2
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, redirect, url_for
 from dotenv import load_dotenv
 from page_analyzer.repository import UrlRepository
 from page_analyzer.validator import validate
@@ -46,11 +46,12 @@ def urls_post():
         url = {"name": data["url"]}
         exist_id = repo.exist(url)
         if exist_id:
+            flash("Страница уже существует")
             return redirect(url_for('url_show', id=exist_id))
         repo.save(url)
         id = url['id']
         flash("Страница успешно добавлена")
-        return redirect(url_for('url_show', id=url.id))
+        return redirect(url_for('url_show', id=id))
 
     flash("Некорректный URL")
     return render_template('index.html',  url=data['name'])
