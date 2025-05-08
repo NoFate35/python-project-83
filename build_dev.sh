@@ -1,4 +1,5 @@
-if (which -a bash == "/data/data/com.termux/files/usr/bin/bash")
+intdir=$(which bash)
+if echo $intdir == "/data/data/com.termux/files/usr/bin/bash"
 
 then
 #!/data/data/com.termux/files/usr/bin/bash

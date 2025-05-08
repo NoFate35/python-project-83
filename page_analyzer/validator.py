@@ -1,0 +1,2 @@
+def validate(url):
+    pass

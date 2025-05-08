@@ -11,6 +11,13 @@ class UrlRepository:
             cur.execute("SELECT * FROM urls")
             return [dict(row) for row in cur]
 
+    def exist(self, url):
+        name = url["name"]
+        with self.conn.cursor(cursor_factory=DictCursor) as cur:
+            cur.execute("SELECT * FROM urls WHERE name = %s", (name,))
+            row = cur.fetchone()
+        print("urlgdgdgdg", row)
+
     def find(self, id):
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
             cur.execute("SELECT * FROM urls WHERE id = %s", (id,))
@@ -18,9 +25,6 @@ class UrlRepository:
             return dict(row) if row else None
 
     def save(self, url):
-            self._create(url)
-
-    def _create(self, url):
         with self.conn.cursor() as cur:
             cur.execute(
                 "INSERT INTO urls (name) VALUES (%s) RETURNING id",
