@@ -50,7 +50,7 @@ def urls_post():
             return redirect(url_for('url_show', id=exist_id))
         repo.save(url)
         id = url['id']
-        flash("Страница успешно добавлена")
+        flash("Страница успешно добавлена", "success")
         return redirect(url_for('url_show', id=id))
 
     flash("Некорректный URL")
