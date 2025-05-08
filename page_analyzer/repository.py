@@ -5,20 +5,27 @@ from psycopg2.extras import DictCursor
 class UrlRepository:
     def __init__(self, conn):
         self.conn = conn
-    def _update(self, car):
-        with self.conn.cursor() as cur:
-            cur.execute(
-                "UPDATE cars SET manufacturer = %s, model = %s WHERE id = %s",
-                (car["manufacturer"], car["model"], car["id"]),
-            )
-        self.conn.commit()
 
-    def _create(self, car):
+    def get_content(self):
+        with self.conn.cursor(cursor_factory=DictCursor) as cur:
+            cur.execute("SELECT * FROM urls")
+            return [dict(row) for row in cur]
+
+    def find(self, id):
+        with self.conn.cursor(cursor_factory=DictCursor) as cur:
+            cur.execute("SELECT * FROM urls WHERE id = %s", (id,))
+            row = cur.fetchone()
+            return dict(row) if row else None
+
+    def save(self, url):
+            self._create(url)
+
+    def _create(self, url):
         with self.conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO cars (manufacturer, model) VALUES (%s, %s) RETURNING id",
-                (car["manufacturer"], car["model"]),
+                "INSERT INTO urls (name) VALUES (%s) RETURNING id",
+                (url["name"]),
             )
             id = cur.fetchone()[0]
-            car["id"] = id
+            url["id"] = id
         self.conn.commit()
