@@ -23,5 +23,7 @@ lint:
 	uv run flake8 page_analyzer
 
 save:
-	./save.sh
+	git add --all
+	git commit
+	git push
 
