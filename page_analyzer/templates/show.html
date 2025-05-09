@@ -30,7 +30,7 @@
 
   <main class="flex-grow-1">
     <div class="container-lg mt-3">
-      <h1>Сайт: http://ya.ru</h1>
+      <h1>Сайт: {{ url.name }}</h1>
 
     
   <div class="table-responsive">
@@ -38,15 +38,15 @@
       <tbody>
         <tr>
           <td>ID</td>
-          <td>1</td>
+          <td>{{ url.id }}</td>
         </tr>
         <tr>
           <td>Имя</td>
-          <td>http://ya.ru</td>
+          <td>{{ url.name }}</td>
         </tr>
         <tr>
           <td>Дата создания</td>
-          <td>2025-05-08</td>
+          <td>{{ created_at }}</td>
         </tr>
       </tbody>
     </table>
@@ -69,45 +69,14 @@
         <th>Дата создания</th>
       </tr>
     </thead>
-      <tbody>
-    
-    <tr>
-        <td>3</td>
-        <td>200</td>
-        <td>ÐÐ¾Ð´ÑÐ²ÐµÑÐ´Ð¸ÑÐµ, ÑÑÐ¾ Ð·Ð°Ð¿ÑÐ¾ÑÑ Ð¾ÑÐ¿ÑÐ°Ð²Ð»ÑÐ»Ð¸ Ð²Ñ, Ð° Ð½Ðµ ÑÐ¾Ð±Ð¾Ñ</td>
-        <td>ÐÑ Ð½Ðµ ÑÐ¾Ð±Ð¾Ñ?</td>
-        <td></td>
-        <td>2025-05-08</td>
-    </tr>
-    
-    <tr>
-        <td>2</td>
-        <td>200</td>
-        <td></td>
-        <td>Яндекс — быстрый поиск в интернете</td>
-        <td>Яндекс, найдётся всё: сайты, изображения, музыка, товары. Решайте любые задачи — от повседневных вопросов до научной работы. Можно искать текстом, голосом или по картинке.</td>
-        <td>2025-05-08</td>
-    </tr>
-    
-    <tr>
-        <td>1</td>
-        <td>200</td>
-        <td></td>
-        <td>Яндекс — быстрый поиск в интернете</td>
-        <td>Яндекс, найдётся всё: сайты, изображения, музыка, товары. Решайте любые задачи — от повседневных вопросов до научной работы. Можно искать текстом, голосом или по картинке.</td>
-        <td>2025-05-08</td>
-    </tr>
-    
-    </tbody>
     </table>
   </div>
-
-    </div>
+  
   </main>
   <footer class="border-top py-3 mt-5 flex-shrink-0">
   <div class="container-lg">
     <div class="text-center">
-      <a href="https://ru.hexlet.io/" target="_blank">Hexlet</a>
+      <a href="https://ru.hexlet.io/" target="_blank">Ivan</a>
     </div>
   </div>
 </footer>

@@ -16,11 +16,12 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 conn = psycopg2.connect(DATABASE_URL)
 
 repo = UrlRepository(conn)
-
+debug = app.logger.debug
 
 @app.route('/')
 def get_index():
-    return render_template('index.html',  url={})
+    messages = get_flashed_messages(with_categories=True)
+    return render_template('index.html',  url={}, messages=messages)
 
 @app.route("/urls")
 def urls_index():
@@ -46,6 +47,7 @@ def urls_post():
     if not errors:
         url = {"name": data["url"]}
         exist_id = repo.exist(url)
+        print("exist id", exist_id)
         if exist_id:
             flash("Страница уже существует")
             return redirect(url_for('url_show', id=exist_id))

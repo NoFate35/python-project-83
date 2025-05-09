@@ -1,7 +1,6 @@
 import psycopg2
 from psycopg2.extras import DictCursor
 
-
 class UrlRepository:
     def __init__(self, conn):
         self.conn = conn
@@ -16,7 +15,7 @@ class UrlRepository:
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
             cur.execute("SELECT * FROM urls WHERE name = %s", (name,))
             row = cur.fetchone()
-            print("urlgdgdgdg", dict(row) if row else None)
+            return dict(row)["id"] if row else None
 
     def find(self, id):
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
@@ -25,7 +24,6 @@ class UrlRepository:
             return dict(row) if row else None
 
     def save(self, url):
-        print("uuuuuuurl", url["name"])
         with self.conn.cursor() as cur:
             cur.execute(
                 "INSERT INTO urls (name) VALUES (%s) RETURNING id",
