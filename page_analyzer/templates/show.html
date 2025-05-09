@@ -23,7 +23,7 @@
   {% if messages %}
   {% for category, message in messages %}
     
-      <div class="alert alert-success" role="alert">Страница успешно проверена</div>
+      <div class="alert alert-success" role="alert">{{ message }}</div>
     {% endfor %}
     {% endif %}
   

@@ -1,6 +1,6 @@
 import psycopg2
 import os
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, get_flashed_messages
 from dotenv import load_dotenv
 from page_analyzer.repository import UrlRepository
 from page_analyzer.validator import validate
@@ -30,10 +30,11 @@ def urls_index():
 
 @app.route("/urls/<int:id>")
 def url_show(id):
+    messages = get_flashed_messages(with_categories=True)
     url = repo.find(id)
     if url is None:
         abort(404)
-    return render_template("show.html", url=url)
+    return render_template("show.html", url=url, messages=messages)
 
 
 @app.route("/urls", methods=["POST"])
