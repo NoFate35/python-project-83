@@ -20,10 +20,12 @@
 
   </header>
   
-  
+  {% if messages %}
+  {% for category, message in messages %}
     
       <div class="alert alert-success" role="alert">Страница успешно проверена</div>
-    
+    {% endfor %}
+    {% endif %}
   
 
   <main class="flex-grow-1">

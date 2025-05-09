@@ -16,7 +16,7 @@ class UrlRepository:
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
             cur.execute("SELECT * FROM urls WHERE name = %s", (name,))
             row = cur.fetchone()
-            print("urlgdgdgdg", row)
+            print("urlgdgdgdg", dict(row) if row else None)
 
     def find(self, id):
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
