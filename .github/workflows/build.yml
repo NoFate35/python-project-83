@@ -19,6 +19,7 @@ jobs:
           make install
       - name: Run test coverage
         run: |
+          make test
           make test-coverage
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
