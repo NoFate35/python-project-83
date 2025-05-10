@@ -34,7 +34,7 @@ def url_show(id):
     messages = get_flashed_messages(with_categories=True)
     url = repo.find(id)
     if url is None:
-        abort(404)
+        return render_template("not_found.html")
     return render_template("show.html", url=url, messages=messages)
 
 
