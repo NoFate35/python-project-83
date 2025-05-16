@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 DATABASE_URL = os.getenv('DATABASE_URL')
-conn = psycopg2.connect("postgresql://ivan:O2lGqomgjg5HYHQL7DJeo51S73P46ivf@dpg-d0fm5mq4d50c73f25ce0-a.oregon-postgres.render.com/flaskdb_ns0p")
+conn = psycopg2.connect(DATABASE_URL)
 
 repo = UrlRepository(conn)
 debug = app.logger.debug
