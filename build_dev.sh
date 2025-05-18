@@ -9,7 +9,6 @@ psql py_flaskdb < database.sql
 else
 #!/usr/bin/bash
 sudo service postgresql start
-#psql -a -d $DATABASE_URL py_flaskdb
 psql py_flaskdb < database.sql
 
 fi
