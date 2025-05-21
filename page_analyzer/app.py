@@ -25,7 +25,9 @@ def get_index():
 
 @app.route("/urls")
 def urls_index():
+        
         urls = repo.get_content()
+        debug('urls %s', urls)
         return render_template("urls.html",urls=urls)
 
 
@@ -42,12 +44,12 @@ def url_show(id):
 def urls_post():
     data = request.form.to_dict()
     
-    errors = validate(data['url'])
-    #debug('errors: %s',errors)
+    normal_url = validate(data['url'])
+    #debug('normal_url: %s',normal_url)
 
-    if not errors:
-        #debug('Noooooo')
-        url = {"name": data["url"]}
+    if normal_url:
+        #debug('Yeeeessss')
+        url = {'name': normal_url}
         exist_id = repo.exist(url)
         #print("exist id", exist_id)
         if exist_id:
