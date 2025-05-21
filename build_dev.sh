@@ -1,5 +1,6 @@
-intdir=$(which bash)
-if [echo $intdir == "/data/data/com.termux/files/usr/bin/bash"]
+intdir=/data/data/com.termux/files/usr/bin/bash
+ttt=/data/data/com.termux/files/usr/bin/bash
+if ["$intdir"="$ttt"]
 
 then
 #!/data/data/com.termux/files/usr/bin/bash
