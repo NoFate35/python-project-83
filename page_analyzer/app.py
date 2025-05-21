@@ -16,12 +16,12 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 conn = psycopg2.connect(DATABASE_URL)
 
 repo = UrlRepository(conn)
+app.logger.setLevel('DEBUG')
 debug = app.logger.debug
 
 @app.route('/')
 def get_index():
-    messages = get_flashed_messages(with_categories=True)
-    return render_template('index.html',  url={}, messages=messages)
+    return render_template('index.html',  url={'name':''})
 
 @app.route("/urls")
 def urls_index():
@@ -41,13 +41,15 @@ def url_show(id):
 @app.route("/urls", methods=["POST"])
 def urls_post():
     data = request.form.to_dict()
-
-    errors = validate(data)
+    
+    errors = validate(data['url'])
+    #debug('errors: %s',errors)
 
     if not errors:
+        #debug('Noooooo')
         url = {"name": data["url"]}
         exist_id = repo.exist(url)
-        print("exist id", exist_id)
+        #print("exist id", exist_id)
         if exist_id:
             flash("Страница уже существует")
             return redirect(url_for('url_show', id=exist_id))
@@ -55,7 +57,7 @@ def urls_post():
         id = url['id']
         flash("Страница успешно добавлена", "success")
         return redirect(url_for('url_show', id=id))
-
-    flash("Некорректный URL")
-    return render_template('index.html',  url=data['name'])
+    debug('yessssss %s', data['url'])
+    flash("Некорректный URL", 'error')
+    return render_template('index.html',  url={'name': data['url']})
     

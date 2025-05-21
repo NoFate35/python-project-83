@@ -23,3 +23,10 @@ def runner(test_app):
 def test_request_example(client):
     response = client.get("/")
     assert '<h1 class="display-3">Анализатор страниц</h1>' in response.text
+
+def test_urls_index_post(client):
+    response = client.post('/urls', data = {
+        "url": 'HttpS://Ya.ru'
+    })
+    assert "Некорректный URL" in response.text
+
