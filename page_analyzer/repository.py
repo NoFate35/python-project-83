@@ -32,3 +32,10 @@ class UrlRepository:
             id = cur.fetchone()[0]
             url["id"] = id
         self.conn.commit()
+    
+    def clear(self):
+        with self.conn.cursor() as cur:
+            cur.execute(
+                "TRUNCATE urls"
+            )
+        self.conn.commit()

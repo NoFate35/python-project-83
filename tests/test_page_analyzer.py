@@ -1,5 +1,6 @@
 import pytest
 from page_analyzer import app
+from page_analyzer.app import repo
 
 @pytest.fixture()
 def test_app():
@@ -20,13 +21,24 @@ def client(test_app):
 def runner(test_app):
     return test_app.test_cli_runner()
 
+def clear_table():
+    repo.clear()
+
+
 def test_request_example(client):
     response = client.get("/")
     assert '<h1 class="display-3">Анализатор страниц</h1>' in response.text
 
-def test_urls_index_post(client):
+def test_urls_index_post_error(client):
     response = client.post('/urls', data = {
-        "url": 'HttpS://Ya.ru'
+        "url": 'HttpS//Ya.ru'
     })
     assert "Некорректный URL" in response.text
+
+def test_urls_index_post(client):
+    response = client.post('/urls', 
+        data = {"url": 'HttpS://Ya.ru'},
+        follow_redirects=True)
+    
+    assert "Страница уже существует" in response.text
 

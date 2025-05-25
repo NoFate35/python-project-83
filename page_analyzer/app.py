@@ -24,10 +24,9 @@ def get_index():
     return render_template('index.html',  url={'name':''})
 
 @app.route("/urls")
-def urls_index():
-        
+def urls_index():        
         urls = repo.get_content()
-        debug('urls %s', urls)
+        #debug('urls %s', urls)
         return render_template("urls.html",urls=urls)
 
 
@@ -53,13 +52,15 @@ def urls_post():
         exist_id = repo.exist(url)
         #print("exist id", exist_id)
         if exist_id:
+            debug('test urrrl exist %s', url)
             flash("Страница уже существует", "info")
             return redirect(url_for('url_show', id=exist_id))
         repo.save(url)
+        debug('test urrrl not exist %s', url)
         id = url['id']
         flash("Страница успешно добавлена", "success")
         return redirect(url_for('url_show', id=id))
-    debug('yessssss %s', data['url'])
+    #debug('yessssss %s', data['url'])
     flash("Некорректный URL", 'error')
     return render_template('index.html',  url={'name': data['url']})
     
