@@ -53,7 +53,7 @@ def urls_post():
         exist_id = repo.exist(url)
         #print("exist id", exist_id)
         if exist_id:
-            flash("Страница уже существует")
+            flash("Страница уже существует", "info")
             return redirect(url_for('url_show', id=exist_id))
         repo.save(url)
         id = url['id']

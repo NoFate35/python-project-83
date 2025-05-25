@@ -6,10 +6,13 @@
   
   {% if messages %}
   {% for category, message in messages %}
-    
+      {% if category == 'info' %}
+      <div class="alert alert-info" role="alert">{{ message }}</div>
+      {% else %}
       <div class="alert alert-success" role="alert">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
+      {% endif %}
+      {% endfor %}
+  {% endif %}
   
 
   <main class="flex-grow-1">
