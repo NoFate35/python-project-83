@@ -25,8 +25,8 @@ class UrlRepository:
     def save(self, url):
         with self.conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO urls (name) VALUES (%s) RETURNING id",
-                (url["name"],)
+                "INSERT INTO urls (name, created_at) VALUES (%s, %s) RETURNING id",
+                (url["name"], now,)
             )
             id = cur.fetchone()[0]
             url["id"] = id
