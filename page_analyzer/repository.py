@@ -1,6 +1,7 @@
 from psycopg2.extras import DictCursor
 from datetime import datetime
 
+
 class UrlRepository:
     def __init__(self, conn):
         self.conn = conn
@@ -26,13 +27,14 @@ class UrlRepository:
     def save(self, url):
         with self.conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO urls (name, created_at) VALUES (%s, %s) RETURNING id",
+                "INSERT INTO urls (name, created_at) \
+                VALUES (%s, %s) RETURNING id",
                 (url["name"], datetime.now(),)
             )
             id = cur.fetchone()[0]
             url["id"] = id
         self.conn.commit()
-    
+
     def clear(self):
         with self.conn.cursor() as cur:
             cur.execute(
