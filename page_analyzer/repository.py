@@ -1,5 +1,6 @@
-from psycopg2.extras import DictCursor
 from datetime import datetime
+
+from psycopg2.extras import DictCursor
 
 
 class UrlRepository:
@@ -29,7 +30,10 @@ class UrlRepository:
             cur.execute(
                 "INSERT INTO urls (name, created_at) \
                 VALUES (%s, %s) RETURNING id",
-                (url["name"], datetime.now(),)
+                (
+                    url["name"],
+                    datetime.now(),
+                ),
             )
             id = cur.fetchone()[0]
             url["id"] = id
@@ -37,7 +41,5 @@ class UrlRepository:
 
     def clear(self):
         with self.conn.cursor() as cur:
-            cur.execute(
-                "TRUNCATE urls"
-            )
+            cur.execute("TRUNCATE urls")
         self.conn.commit()

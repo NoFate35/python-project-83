@@ -1,28 +1,37 @@
-import psycopg2
 import os
-from flask import Flask, render_template, request, flash, redirect, url_for, get_flashed_messages
+
+import psycopg2
 from dotenv import load_dotenv
+from flask import (
+    Flask,
+    flash,
+    get_flashed_messages,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
+
 from page_analyzer.repository import UrlRepository
 from page_analyzer.validator import validate
-
 
 app = Flask(__name__)
 
 load_dotenv()
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
-DATABASE_URL = os.getenv('DATABASE_URL')
+DATABASE_URL = os.getenv("DATABASE_URL")
 conn = psycopg2.connect(DATABASE_URL)
 
 repo = UrlRepository(conn)
-app.logger.setLevel('DEBUG')
+app.logger.setLevel("DEBUG")
 debug = app.logger.debug
 
 
-@app.route('/')
+@app.route("/")
 def get_index():
-    return render_template('index.html',  url={'name': ''})
+    return render_template("index.html", url={"name": ""})
 
 
 @app.route("/urls")
@@ -43,18 +52,18 @@ def url_show(id):
 @app.route("/urls", methods=["POST"])
 def urls_post():
     data = request.form.to_dict()
-    normal_url = validate(data['url'])
+    normal_url = validate(data["url"])
     if normal_url:
-        url = {'name': normal_url}
+        url = {"name": normal_url}
         exist_id = repo.exist(url)
         if exist_id:
-            debug('test urrrl exist %s', url)
+            debug("test urrrl exist %s", url)
             flash("Страница уже существует", "info")
-            return redirect(url_for('url_show', id=exist_id))
+            return redirect(url_for("url_show", id=exist_id))
         repo.save(url)
-        debug('test urrrl not exist %s', url)
-        id = url['id']
+        debug("test urrrl not exist %s", url)
+        id = url["id"]
         flash("Страница успешно добавлена", "success")
-        return redirect(url_for('url_show', id=id))
-    flash("Некорректный URL", 'error')
-    return render_template('index.html',  url={'name': data['url']})
+        return redirect(url_for("url_show", id=id))
+    flash("Некорректный URL", "error")
+    return render_template("index.html", url={"name": data["url"]})
