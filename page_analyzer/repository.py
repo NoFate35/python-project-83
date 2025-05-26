@@ -9,7 +9,7 @@ class UrlRepository:
 
     def get_content(self):
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
-            cur.execute("SELECT * FROM urls")
+            cur.execute("SELECT * FROM urls ORDER BY created_at")
             return [dict(row) for row in cur]
 
     def exist(self, url):
