@@ -17,7 +17,7 @@ test-coverage:
 	uv run pytest --cov=page_analyzer --cov-report xml
 
 lint:
-	uv run ruff check page_analyzer --fix
+	uv run flake8 page_analyzer
 
 save:
 	git add --all
