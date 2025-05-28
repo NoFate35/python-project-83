@@ -36,14 +36,14 @@ def get_index():
 
 @app.route("/urls")
 def urls_index():
-    urls = repo.get_content()
+    urls = repo.get_url_content()
     return render_template("urls.html", urls=urls)
 
 
 @app.route("/urls/<int:id>")
-def url_show(id):
+def url_show(url_id):
     messages = get_flashed_messages(with_categories=True)
-    url = repo.find(id)
+    url = repo.find_url(url_id)
     if url is None:
         return render_template("not_found.html")
     return render_template("show.html", url=url, messages=messages)
@@ -55,12 +55,12 @@ def urls_post():
     normal_url = validate(data["url"])
     if normal_url:
         url = {"name": normal_url}
-        exist_id = repo.exist(url)
+        exist_id = repo.exist_url(url)
         if exist_id:
             debug("test urrrl exist %s", url)
             flash("Страница уже существует", "info")
             return redirect(url_for("url_show", id=exist_id))
-        repo.save(url)
+        repo.save_url(url)
         debug("test urrrl not exist %s", url)
         id = url["id"]
         flash("Страница успешно добавлена", "success")
@@ -70,7 +70,8 @@ def urls_post():
 
 
 @app.route('urls/<int:id>/checks', methods=['POST'])
-def urls_check(id):
-	repo.save_check(id)
-	flash("Страница успешно проверена", "success")
-	return redirect(redirect(url_for("url_show", id=id)))
+def url_checking(id):
+    url_check = {'url_id': id}
+    check_id = repo.save_check(url_check)
+    flash("Страница успешно проверена", "success")
+    return redirect(redirect(url_for("url_show", check_id=check_id)))
