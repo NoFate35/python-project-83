@@ -67,3 +67,10 @@ def urls_post():
         return redirect(url_for("url_show", id=id))
     flash("Некорректный URL", "error")
     return render_template("index.html", url={"name": data["url"]})
+
+
+@app.route('urls/<int:id>/checks', methods=['POST'])
+def urls_check(id):
+	repo.save_check(id)
+	flash("Страница успешно проверена", "success")
+	return redirect(redirect(url_for("url_show", id=id)))

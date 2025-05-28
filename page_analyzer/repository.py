@@ -43,3 +43,6 @@ class UrlRepository:
         with self.conn.cursor() as cur:
             cur.execute("TRUNCATE urls")
         self.conn.commit()
+    
+    def save_check(self, url_id):
+    	
