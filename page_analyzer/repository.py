@@ -9,7 +9,7 @@ class UrlRepository:
 
     def get_url_content(self):
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
-            cur.execute("SELECT * FROM urls ORDER BY created_at")
+            cur.execute("SELECT * FROM urls ORDER BY created_at DESC")
             return [dict(row) for row in cur]
 
     def exist_url(self, url):
@@ -55,12 +55,12 @@ class UrlRepository:
                     datetime.now(),
                 ),
             )
-            id = cur.fetchone()[0]
-            url_check["id"] = id
+            #id = cur.fetchone()[0]
+            #url_check["id"] = id
         self.conn.commit()
     
-    def find_check(self, check_id):
+    def get_checks_content(self, url_id):
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
-            cur.execute("SELECT * FROM url_checks WHERE id = %s", (check_id,))
-            row = cur.fetchone()
-            return dict(row) if row else None
+            cur.execute("SELECT * FROM url_checks WHERE url_id = %s " \
+            "ORDER BY created_at DESC;", (url_id,))
+            return [dict(row) for row in cur]

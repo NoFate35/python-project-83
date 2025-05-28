@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS urls, url_checks;
 CREATE TABLE urls (
     id int PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name varchar (255),
-    created_at DATE
+    created_at TIMESTAMP
 );
 
 CREATE TABLE url_checks (
@@ -13,5 +13,5 @@ CREATE TABLE url_checks (
 	status_code varchar (10),
 	h1 varchar (255),
 	description text,
-	created_at DATE
+	created_at TIMESTAMP
 	);
