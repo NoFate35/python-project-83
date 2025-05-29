@@ -1,6 +1,6 @@
 import pytest
+import os
 from page_analyzer import app
-from page_analyzer.app import repo
 
 @pytest.fixture()
 def test_app():
@@ -26,15 +26,17 @@ def runner(test_app):
 
 
 def test_request_example(client):
-    repo.clear()
+    os.system("psql py_flaskdb < database.sql")
     response = client.get("/")
     assert '<h1 class="display-3">Анализатор страниц</h1>' in response.text
+
 
 def test_urls_index_post_error(client):
     response = client.post('/urls', data = {
         "url": 'HttpS//Ya.ru'
     })
     assert "Некорректный URL" in response.text
+
 
 def test_urls_index_post(client):
     response = client.post('/urls', 
@@ -49,3 +51,12 @@ def test_urls_index_post(client):
     
     assert "Страница уже существует" in response.text
 
+
+def test_checks(client):
+    response = client.post('/urls/1/checks',
+        follow_redirects=True)
+    assert "Страница успешно проверена" in response.text
+
+def test_urls_list(client):
+    response = client.get('/urls')
+    assert "https://Ya.ru" in response.text

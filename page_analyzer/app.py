@@ -47,7 +47,11 @@ def url_show(url_id):
     url_checks = repo.get_checks_content(url_id)
     if url is None:
         return render_template("not_found.html")
-    return render_template("show.html", url=url, checks=url_checks, messages=messages)
+    return render_template("show.html",
+                           url=url,
+                           checks=url_checks,
+                           messages=messages
+                           )
 
 
 @app.route("/urls", methods=["POST"])

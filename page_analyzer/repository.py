@@ -9,13 +9,14 @@ class UrlRepository:
 
     def get_url_content(self):
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
-            cur.execute("SELECT " \
-            "DISTINCT ON (id) urls.id AS id, " \
-            "urls.name AS name, " \
-            "checks.created_at AS last_date, " \
-            "checks.status_code " \
-            "FROM urls LEFT JOIN url_checks AS checks ON urls.id = checks.url_id " \
-            "ORDER BY id DESC, last_date DESC;")
+            cur.execute("SELECT "
+                        "DISTINCT ON (id) urls.id AS id, "
+                        "urls.name AS name, "
+                        "checks.created_at AS last_date, "
+                        "checks.status_code "
+                        "FROM urls LEFT JOIN url_checks AS checks "
+                        "ON urls.id = checks.url_id "
+                        "ORDER BY id DESC, last_date DESC;")
             return [dict(row) for row in cur]
 
     def exist_url(self, url):
@@ -34,8 +35,8 @@ class UrlRepository:
     def save_url(self, url):
         with self.conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO urls (name, created_at) \
-                VALUES (%s, %s) RETURNING id",
+                "INSERT INTO urls (name, created_at) "
+                "VALUES (%s, %s) RETURNING id",
                 (
                     url["name"],
                     datetime.now(),
@@ -45,12 +46,6 @@ class UrlRepository:
             url["id"] = id
         self.conn.commit()
 
-    def clear_tables(self):
-        with self.conn.cursor() as cur:
-            cur.execute("TRUNCATE urls")
-            cur.execute("TRUNCATE url_checks")
-        self.conn.commit()
-    
     def save_check(self, url_check):
         with self.conn.cursor() as cur:
             cur.execute(
@@ -61,12 +56,11 @@ class UrlRepository:
                     datetime.now(),
                 ),
             )
-            #id = cur.fetchone()[0]
-            #url_check["id"] = id
         self.conn.commit()
-    
+
     def get_checks_content(self, url_id):
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
-            cur.execute("SELECT id, status_code, h1, description, created_at FROM url_checks WHERE url_id = %s " \
-            "ORDER BY created_at DESC;", (url_id,))
+            cur.execute("SELECT id, status_code, h1, description, created_at "
+                        "FROM url_checks WHERE url_id = %s "
+                        "ORDER BY created_at DESC;", (url_id,))
             return [dict(row) for row in cur]
