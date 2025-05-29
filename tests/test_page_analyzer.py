@@ -1,7 +1,7 @@
 import pytest
 import os
 from page_analyzer import app
-
+from page_analyzer.app import repo
 @pytest.fixture()
 def test_app():
     test_app = app
@@ -26,7 +26,7 @@ def runner(test_app):
 
 
 def test_request_example(client):
-    os.system("psql py_flaskdb < database.sql")
+    os.system("psql $DATABASE_URL < database.sql")
     response = client.get("/")
     assert '<h1 class="display-3">Анализатор страниц</h1>' in response.text
 

@@ -20,6 +20,7 @@ jobs:
         run: |
           pip install uv
           make install
+          psql -a -d $DATABASE_URL -f database.sql
       - name: Run test coverage
         run: |
           make test

@@ -66,7 +66,6 @@ def urls_post():
             flash("Страница уже существует", "info")
             return redirect(url_for("url_show", url_id=exist_id))
         repo.save_url(url)
-        debug("test urrrl not exist %s", url)
         url_id = url["id"]
         flash("Страница успешно добавлена", "success")
         return redirect(url_for("url_show", url_id=url_id))
