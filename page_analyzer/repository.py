@@ -42,8 +42,8 @@ class UrlRepository:
                     datetime.now(),
                 ),
             )
-            id = cur.fetchone()[0]
-            url["id"] = id
+            url_id = cur.fetchone()[0]
+            url["id"] = url_id
         self.conn.commit()
 
     def save_check(self, url_check):
@@ -65,9 +65,3 @@ class UrlRepository:
                         "ORDER BY created_at DESC;", (url_id,))
             return [dict(row) for row in cur]
 
-    def clear(self):
-        with self.conn.cursor() as cur:
-            cur.execute("DROP TABLE IF EXISTS urls, url_checks;")
-            cur.execute("CREATE TABLE urls (id int PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name varchar (255), created_at TIMESTAMP;")
-            cur.execute("CREATE TABLE url_checks (id int PRIMARY KEY GENERATED ALWAYS AS IDENTITY, url_id int REFERENCES urls(id), status_code varchar (10), h1 varchar (255), description text, created_at TIMESTAMP);")
-        self.conn.commit()
