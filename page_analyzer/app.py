@@ -1,5 +1,5 @@
 import os
-
+import requests
 import psycopg2
 from dotenv import load_dotenv
 from flask import (
@@ -75,8 +75,11 @@ def urls_post():
 
 @app.route('/urls/<int:url_id>/checks', methods=['POST'])
 def url_checking(url_id):
-    debug('url aidi: %s', url_id)
     url_check = {'url_id': url_id}
+    url = repo.find_url(url_id)
+    answer = requests.get(url['name'])
+    url_check['status_code'] = answer.status_code
+    #debug('url_check: %s', url_check['status_code'])
     repo.save_check(url_check)
     flash("Страница успешно проверена", "success")
     return redirect(url_for("url_show", url_id=url_id))

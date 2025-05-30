@@ -49,10 +49,11 @@ class UrlRepository:
     def save_check(self, url_check):
         with self.conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO url_checks (url_id, created_at) \
-                VALUES (%s, %s) RETURNING id",
+                "INSERT INTO url_checks (url_id, status_code, created_at) \
+                VALUES (%s, %s, %s) RETURNING id",
                 (
                     url_check['url_id'],
+                    url_check['status_code'],
                     datetime.now(),
                 ),
             )
