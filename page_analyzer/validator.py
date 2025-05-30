@@ -1,11 +1,13 @@
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 
-from validators import url
+from validators import url as url_validate
 
 
 def validate(try_url):
+    print('try uuurl', try_url)
     url_object = urlparse(try_url)
-    normalize_url = url_object.geturl()
-    if not url(normalize_url):
+    print('url_oojec', url_object)
+    normalize_url = url_object._replace(path="").geturl()
+    if not url_validate(normalize_url):
         return False
     return normalize_url
