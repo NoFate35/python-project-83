@@ -1,5 +1,8 @@
 import os
 import requests
+from requests.exceptions import HTTPError
+from requests.exceptions import ConnectionError
+
 import psycopg2
 from dotenv import load_dotenv
 from flask import (
@@ -77,9 +80,18 @@ def urls_post():
 def url_checking(url_id):
     url_check = {'url_id': url_id}
     url = repo.find_url(url_id)
-    answer = requests.get(url['name'])
-    url_check['status_code'] = answer.status_code
-    #debug('url_check: %s', url_check['status_code'])
-    repo.save_check(url_check)
-    flash("Страница успешно проверена", "success")
+    
+    try:
+    	response = requests.get(url['name'])
+    	response.raise_for_status()
+    	status = response.status_code
+    	#debug('status: %s', status)
+    except Exception as err:
+        status = None
+    if status:
+    	url_check['status_code'] = status
+    	repo.save_check(url_check)
+    	flash("Страница успешно проверена", "success")
+    else:
+    	flash("Произошла ошибка при проверке", "error")
     return redirect(url_for("url_show", url_id=url_id))
