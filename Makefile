@@ -13,6 +13,7 @@ PORT ?= 8000
 start:
 	uv run gunicorn -t 180 -w 5 -b 0.0.0.0:8000 page_analyzer:app
 
+
 build:
 	./build.sh
 
