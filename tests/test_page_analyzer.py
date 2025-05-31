@@ -10,6 +10,7 @@ def test_app():
     repo.clear_tables()
     print('CLEAR TABLES')
     yield test_app
+    repo.clear_tables()
 
 
 
