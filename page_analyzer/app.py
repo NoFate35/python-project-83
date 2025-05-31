@@ -85,7 +85,6 @@ def url_checking(url_id):
     	response = requests.get(url['name'])
     	response.raise_for_status()
     	status = response.status_code
-    	#debug('status: %s', status)
     except Exception as err:
         status = None
     if status:

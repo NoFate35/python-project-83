@@ -7,9 +7,10 @@ def test_app():
     test_app.config.update({
         "TESTING": True,
     })
-
+    #os.system("psql $DATABASE_URL < database.sql")
 
     yield test_app
+    os.system("psql $DATABASE_URL < database.sql")
 
 
 @pytest.fixture()
@@ -25,7 +26,6 @@ def runner(test_app):
 
 
 def test_request_example(client):
-    os.system("psql $DATABASE_URL < database.sql")
     response = client.get("/")
     assert '<h1 class="display-3">Анализатор страниц</h1>' in response.text
 
