@@ -69,7 +69,7 @@ class UrlRepository:
     def clear_tables(self):
         with self.conn.cursor() as cur:
             cur.execute(
-                "TRUNCATE urls RESTART IDENTITY CASCADE;" \
+                "TRUNCATE urls RESTART IDENTITY CASCADE;"
                 "TRUNCATE url_checks RESTART IDENTITY;"
             )
         self.conn.commit()

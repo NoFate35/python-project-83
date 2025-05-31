@@ -1,6 +1,8 @@
 import pytest
 from page_analyzer.app import repo
 from page_analyzer import app
+import pook
+
 @pytest.fixture()
 def test_app():
     test_app = app
@@ -64,3 +66,20 @@ def test_urls_list(client):
         follow_redirects=True)
     response = client.get('/urls')
     assert "https://Ya.ru" in response.text
+
+@pook.get('http://yopppppp.ru', reply=200)
+@pook.get('http://ruuurro.ru', reply=500)
+def test_status_code(client):
+    _ = client.post('/urls', 
+        data = {"url": 'http://yopppppp.ru'},
+        follow_redirects=True)
+    response = client.post('/urls/1/checks',
+        follow_redirects=True)
+    assert "200" in response.text
+    _ = client.post('/urls', 
+        data = {"url": 'http://ruuurro.ru'},
+        follow_redirects=True)
+    response = client.post('/urls/2/checks',
+        follow_redirects=True)
+    assert "Произошла ошибка при проверке" in response.text
+    
