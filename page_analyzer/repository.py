@@ -65,3 +65,11 @@ class UrlRepository:
                         "FROM url_checks WHERE url_id = %s "
                         "ORDER BY created_at DESC;", (url_id,))
             return [dict(row) for row in cur]
+
+    def clear_tables(self):
+        with self.conn.cursor() as cur:
+            cur.execute(
+                "TRUNCATE urls RESTART IDENTITY CASCADE;" \
+                "TRUNCATE url_checks RESTART IDENTITY;"
+            )
+        self.conn.commit()

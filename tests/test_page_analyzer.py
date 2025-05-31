@@ -1,5 +1,5 @@
 import pytest
-import os
+from page_analyzer.app import repo
 from page_analyzer import app
 @pytest.fixture()
 def test_app():
@@ -7,10 +7,10 @@ def test_app():
     test_app.config.update({
         "TESTING": True,
     })
-    #os.system("psql $DATABASE_URL < database.sql")
-
+    repo.clear_tables()
+    print('CLEAR TABLES')
     yield test_app
-    os.system("psql $DATABASE_URL < database.sql")
+
 
 
 @pytest.fixture()
@@ -41,21 +41,25 @@ def test_urls_index_post(client):
     response = client.post('/urls', 
         data = {"url": 'HttpS://Ya.ru'},
         follow_redirects=True)
-    
     assert "Страница успешно добавлена" in response.text
 
     response = client.post('/urls', 
         data = {"url": 'HttpS://Ya.ru'},
         follow_redirects=True)
-    
     assert "Страница уже существует" in response.text
 
 
 def test_checks(client):
+    _ = client.post('/urls', 
+        data = {"url": 'HttpS://Ya.ru'},
+        follow_redirects=True)
     response = client.post('/urls/1/checks',
         follow_redirects=True)
     assert "Страница успешно проверена" in response.text
 
 def test_urls_list(client):
+    _ = client.post('/urls', 
+        data = {"url": 'HttpS://Ya.ru'},
+        follow_redirects=True)
     response = client.get('/urls')
     assert "https://Ya.ru" in response.text
