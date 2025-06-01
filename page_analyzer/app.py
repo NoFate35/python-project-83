@@ -1,6 +1,4 @@
 import os
-import requests
-
 
 import psycopg2
 from dotenv import load_dotenv
@@ -15,7 +13,7 @@ from flask import (
 )
 
 from page_analyzer.repository import UrlRepository
-from page_analyzer.validator import validate
+from page_analyzer.validator import validate, get_status
 
 app = Flask(__name__)
 
@@ -79,13 +77,7 @@ def urls_post():
 def url_checking(url_id):
     url_check = {'url_id': url_id}
     url = repo.find_url(url_id)
-
-    try:
-        response = requests.get(url['name'])
-        response.raise_for_status()
-        status = response.status_code
-    except Exception:
-        status = None
+    status = get_status(url)
     if status:
         url_check['status_code'] = status
         repo.save_check(url_check)
