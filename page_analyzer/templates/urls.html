@@ -28,11 +28,11 @@
             {{ url_check.name }}
           </a>
         </td>
-        {% if url_check.last_date == None %}
+          {% if url_check.last_date == None %}
           <td></td>
           {% else %}
-            <td>{{ url_check.last_date }}</td>
-            {% endif %}
+          <td>{{ url_check.last_date }}</td>
+          {% endif %}
         {% if url_check.status_code == None %}
           <td></td>
           {% else %}

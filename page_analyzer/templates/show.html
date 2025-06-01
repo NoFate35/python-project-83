@@ -63,9 +63,21 @@
     <tr>
         <td>{{ check.id }}</td>
         <td>{{ check.status_code }}</td>
-        <td></td>
-        <td></td>
-        <td></td>
+        {% if check.h1 == None %}
+          <td></td>
+          {% else %}
+          <td>{{ check.h1 }}</td>
+        {% endif %}
+        {% if check.title == None %}
+          <td></td>
+          {% else %}
+          <td>{{ check.title }}</td>
+        {% endif %}
+        {% if check.description == None %}
+          <td></td>
+          {% else %}
+          <td>{{ check.description }}</td>
+        {% endif %}
         <td>{{ check.created_at }}</td>
     </tr>
     {% endfor %}

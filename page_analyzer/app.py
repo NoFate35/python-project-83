@@ -1,5 +1,5 @@
 import os
-
+from bs4 import BeautifulSoup
 import psycopg2
 from dotenv import load_dotenv
 from flask import (
@@ -13,7 +13,7 @@ from flask import (
 )
 
 from page_analyzer.repository import UrlRepository
-from page_analyzer.validator import validate, get_status
+from page_analyzer.validator import validate, get_response
 
 app = Flask(__name__)
 
@@ -77,9 +77,28 @@ def urls_post():
 def url_checking(url_id):
     url_check = {'url_id': url_id}
     url = repo.find_url(url_id)
-    status = get_status(url)
-    if status:
-        url_check['status_code'] = status
+    url_response = get_response(url)
+    if url_response:
+        url_check['status_code'] = url_response.status_code
+        html_doc = url_response.text
+        
+        soup = BeautifulSoup(html_doc, 'html.parser')
+        url_title = soup.title
+        if url_title:
+            url_check['title'] = url_title.string
+        else:
+            url_check['title'] = None
+        url_h1 = soup.h1
+        if url_h1:
+            url_check['h1'] = url_h1.string
+        else:
+            url_check['h1'] = None
+        url_description = soup.meta
+        if url_description['']:
+            url_check['description'] = url_h1.string
+        else:
+            url_check['h1'] = None
+            debug('URL_TITLE %s', url_title.string)
         repo.save_check(url_check)
         flash("Страница успешно проверена", "success")
     else:

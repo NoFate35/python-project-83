@@ -13,10 +13,10 @@ def validate(try_url):
         return False
     return normalize_url
 
-def get_status(url):
+def get_response(url):
     try:
         response = requests.get(url['name'])
         response.raise_for_status()
-        return response.status_code
+        return response
     except Exception:
         return None
