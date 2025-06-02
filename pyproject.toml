@@ -12,7 +12,6 @@ dependencies = [
     "psycopg2>=2.9.10",
     "python-dotenv>=1.1.0",
     "requests>=2.32.3",
-    "responses>=0.25.7",
     "validators>=0.35.0",
 ]
 
@@ -21,5 +20,6 @@ dev = [
     "flake8>=7.2.0",
     "pytest>=8.3.5",
     "pytest-cov>=6.1.1",
+    "responses>=0.25.7",
 ]
 
