@@ -45,6 +45,7 @@ def url_show(url_id):
     messages = get_flashed_messages(with_categories=True)
     url = repo.find_url(url_id)
     url_checks = repo.get_checks_content(url_id)
+    #debug('url checkssss %s', url_checks)
     if url is None:
         return render_template("not_found.html")
     return render_template("show.html",
@@ -62,7 +63,7 @@ def urls_post():
         url = {"name": normal_url}
         exist_id = repo.exist_url(url)
         if exist_id:
-            debug("test urrrl exist %s", url)
+            #debug("test urrrl exist %s", url)
             flash("Страница уже существует", "info")
             return redirect(url_for("url_show", url_id=exist_id))
         repo.save_url(url)
@@ -88,19 +89,18 @@ def url_checking(url_id):
         else:
             url_check['title'] = None
         url_h1 = soup.h1
+        debug('all h1: %s', soup.find_all('h1'))
         if url_h1:
             url_check['h1'] = url_h1.string
         else:
             url_check['h1'] = None
-
         url_meta_tags = soup.find_all('meta')
-        for url_meta_tag in url_meta_tags:
-            debug('urllll_meta %s', url_meta_tag.attrs.keys())
-        if url_meta_tag:
-            pass
-            #description = url_meta.get('name')
-            #content = description.get:
-            #url_check['description'] = url_h1.string
+        if url_meta_tags:
+            for url_meta_tag in url_meta_tags:
+                url_meta_tag_attrs = url_meta_tag.attrs
+                if set(['name', 'content']).issubset(set(url_meta_tag_attrs.keys())):
+                    if url_meta_tag_attrs['name'] == 'description':
+                        url_check['description'] = url_meta_tag_attrs['content']
         else:
             url_check['description'] = None
         repo.save_check(url_check)

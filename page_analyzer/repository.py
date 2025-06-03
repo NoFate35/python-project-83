@@ -49,14 +49,14 @@ class UrlRepository:
     def save_check(self, url_check):
         with self.conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO url_checks (url_id, status_code, h1, title, created_at) \
-                VALUES (%s, %s, %s, %s, %s) RETURNING id",
+                "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) \
+                VALUES (%s, %s, %s, %s, %s, %s) RETURNING id",
                 (
                     url_check['url_id'],
                     url_check['status_code'],
                     url_check['h1'],
                     url_check['title'],
-                    #url_check['description'],
+                    url_check['description'],
                     datetime.now(),
                 ),
             )
@@ -66,7 +66,7 @@ class UrlRepository:
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
             cur.execute("SELECT id, status_code, h1,title, description, created_at "
                         "FROM url_checks WHERE url_id = %s "
-                        "ORDER BY created_at DESC;", (url_id,))
+                        "ORDER BY id DESC;", (url_id,))
             return [dict(row) for row in cur]
 
     def clear_tables(self):

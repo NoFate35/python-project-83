@@ -75,11 +75,7 @@
           {% else %}
           <td>{{ check.title }}</td>
         {% endif %}
-        {% if check.description == None %}
-          <td></td>
-          {% else %}
-          <td>{{ check.description }}</td>
-        {% endif %}
+      <td>{{ check.description }}</td>
         <td>{{ check.created_at }}</td>
     </tr>
     {% endfor %}
