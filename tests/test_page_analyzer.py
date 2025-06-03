@@ -1,7 +1,7 @@
 import pytest
 from page_analyzer.app import repo
 from page_analyzer import app
-import pook
+import responses
 
 @pytest.fixture()
 def test_app():
@@ -67,9 +67,18 @@ def test_urls_list(client):
     response = client.get('/urls')
     assert "https://Ya.ru" in response.text
 
-@pook.get('http://yopppppp.ru', reply=200)
-@pook.get('http://ruuurro.ru', reply=500)
+@responses.activate
 def test_status_code(client):
+    responses.add(
+        responses.GET,
+        'http://yopppppp.ru',
+        status=200,
+    )
+    responses.add(
+        responses.GET,
+        'http://ruuurro.ru',
+        status=500,
+    )
     _ = client.post('/urls', 
         data = {"url": 'http://yopppppp.ru'},
         follow_redirects=True)

@@ -81,7 +81,7 @@ def url_checking(url_id):
     if url_response:
         url_check['status_code'] = url_response.status_code
         html_doc = url_response.text
-        
+        ''' 
         soup = BeautifulSoup(html_doc, 'html.parser')
         url_title = soup.title
         if url_title:
@@ -98,7 +98,7 @@ def url_checking(url_id):
             url_check['description'] = url_h1.string
         else:
             url_check['h1'] = None
-            debug('URL_TITLE %s', url_title.string)
+            debug('URL_TITLE %s', url_title.string)'''
         repo.save_check(url_check)
         flash("Страница успешно проверена", "success")
     else:
