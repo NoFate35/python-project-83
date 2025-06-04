@@ -232,7 +232,7 @@ requires-dist = [
     { name = "flask", specifier = ">=3.1.0" },
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "html5lib", specifier = ">=1.1" },
-    { name = "psycopg2", specifier = ">=2.9.10" },
+    { name = "psycopg2", specifier = ">=2.9.5" },
     { name = "python-dotenv", specifier = ">=1.1.0" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "validators", specifier = ">=0.35.0" },
