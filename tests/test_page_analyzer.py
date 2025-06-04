@@ -31,7 +31,7 @@ def test_urls_index_post_error(client):
         "url": 'HttpS//Ya.ru'
     })
     assert "Некорректный URL" in response.text
-
+    
 
 def test_urls_index_post(client):
     response = client.post('/urls', 
@@ -45,7 +45,7 @@ def test_urls_index_post(client):
     assert "Страница уже существует" in response.text
 
 
-def test_checks(client):
+def test_checks_for_flash(client):
     _ = client.post('/urls', 
         data = {"url": 'HttpS://Ya.ru'},
         follow_redirects=True)
@@ -59,6 +59,7 @@ def test_urls_list(client):
         follow_redirects=True)
     response = client.get('/urls')
     assert "https://Ya.ru" in response.text
+
 
 @responses.activate
 def test_checks(client):
