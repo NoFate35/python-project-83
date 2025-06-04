@@ -21,13 +21,6 @@ def client(test_app):
     return test_app.test_client()
 
 
-@pytest.fixture()
-def runner(test_app):
-    return test_app.test_cli_runner()
-
-
-
-
 def test_request_example(client):
     response = client.get("/")
     assert '<h1 class="display-3">Анализатор страниц</h1>' in response.text
@@ -68,27 +61,48 @@ def test_urls_list(client):
     assert "https://Ya.ru" in response.text
 
 @responses.activate
-def test_status_code(client):
+def test_checks(client):
     responses.add(
         responses.GET,
-        'http://yopppppp.ru',
+        'http://rightcheck.ru',
+        body = '''<h1>yyyy</h1>
+        			  <title>tatle</title>
+        			  <meta name="description" content="contemp">''',
         status=200,
     )
     responses.add(
         responses.GET,
-        'http://ruuurro.ru',
+        'http://wrongcheck.ru',
+        body = '''<h1>yyyy</h1>
+        			  <title>tatle</title>
+        			  <meta name="wrongTag" content="contemp">''',
+        status=200,
+    )
+    responses.add(
+        responses.GET,
+        'http://wrongstatus.ru',
         status=500,
     )
     _ = client.post('/urls', 
-        data = {"url": 'http://yopppppp.ru'},
+        data = {"url": 'http://rightcheck.ru'},
         follow_redirects=True)
-    response = client.post('/urls/1/checks',
+    wright_response = client.post('/urls/1/checks',
         follow_redirects=True)
-    assert "200" in response.text
+    #print("response.tttext", response.text.split())
+    assert "200" in wright_response.text
+    assert "yyyy" in wright_response.text
+    assert "tatle" in wright_response.text
+    assert "contemp" in wright_response.text
     _ = client.post('/urls', 
-        data = {"url": 'http://ruuurro.ru'},
+        data = {"url": 'http://wrongstatus.ru'},
         follow_redirects=True)
-    response = client.post('/urls/2/checks',
+    wrong_status_response = client.post('/urls/2/checks',
         follow_redirects=True)
-    assert "Произошла ошибка при проверке" in response.text
+    assert "Произошла ошибка при проверке" in wrong_status_response.text
+    _ = client.post('/urls', 
+        data = {"url": 'http://wrongcheck.ru'},
+        follow_redirects=True)
+    wright_response = client.post('/urls/3/checks',
+        follow_redirects=True)
+    assert "contemp" not in wright_response.text
     
