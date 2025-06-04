@@ -63,18 +63,10 @@
     <tbody>
     {% for check in checks %}
     <tr>
-        <td>{{ check.id }}</td>
-        <td>{{ check.status_code }}</td>
-        {% if check.h1 == None %}
-          <td></td>
-          {% else %}
-          <td>{{ check.h1 }}</td>
-        {% endif %}
-        {% if check.title == None %}
-          <td></td>
-          {% else %}
-          <td>{{ check.title }}</td>
-        {% endif %}
+       <td>{{ check.id }}</td>
+      <td>{{ check.status_code }}</td>
+       <td>{{ check.h1 }}</td>
+       <td>{{ check.title }}</td>
       <td>{{ check.description }}</td>
         <td>{{ check.created_at }}</td>
     </tr>

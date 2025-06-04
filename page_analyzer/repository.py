@@ -64,7 +64,7 @@ class UrlRepository:
 
     def get_checks_content(self, url_id):
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
-            cur.execute("SELECT id, status_code, h1,title, description, created_at "
+            cur.execute("SELECT *"
                         "FROM url_checks WHERE url_id = %s "
                         "ORDER BY id DESC;", (url_id,))
             return [dict(row) for row in cur]

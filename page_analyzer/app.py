@@ -76,7 +76,11 @@ def urls_post():
 
 @app.route('/urls/<int:url_id>/checks', methods=['POST'])
 def url_checking(url_id):
-    url_check = {'url_id': url_id}
+    url_check = {'url_id': url_id,
+    					   'status_code': None,
+    					   'title': '',
+    					   'h1': '',
+    					   'description': ''}
     url = repo.find_url(url_id)
     url_response = get_response(url)
     if url_response:
@@ -86,14 +90,10 @@ def url_checking(url_id):
         url_title = soup.title
         if url_title:
             url_check['title'] = url_title.string
-        else:
-            url_check['title'] = None
         url_h1 = soup.h1
         debug('all h1: %s', soup.find_all('h1'))
         if url_h1:
             url_check['h1'] = url_h1.string
-        else:
-            url_check['h1'] = None
         url_meta_tags = soup.find_all('meta')
         #debug('url_meta_tags', url_meta_tags)
         if url_meta_tags:
@@ -102,8 +102,6 @@ def url_checking(url_id):
                 if set(['name', 'content']).issubset(set(url_meta_tag_attrs.keys())):
                     if url_meta_tag_attrs['name'] == 'description':
                         url_check['description'] = url_meta_tag_attrs['content']
-        else:
-            url_check['description'] = None
         repo.save_check(url_check)
         flash("Страница успешно проверена", "success")
     else:
