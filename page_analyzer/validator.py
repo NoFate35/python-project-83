@@ -13,6 +13,7 @@ def validate(try_url):
         return False
     return normalize_url
 
+
 def get_response(url):
     try:
         response = requests.get(url['name'])
