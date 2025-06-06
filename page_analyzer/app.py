@@ -91,11 +91,9 @@ def url_checking(url_id):
         if url_title:
             url_check['title'] = url_title.string
         url_h1 = soup.h1
-        #debug('all h1: %s', soup.find_all('h1'))
         if url_h1:
             url_check['h1'] = url_h1.string
         url_meta_tags = soup.find_all('meta')
-        #debug('url_meta_tags', url_meta_tags)
         if url_meta_tags:
             for url_meta_tag in url_meta_tags:
                 url_meta_tag_attrs = url_meta_tag.attrs
