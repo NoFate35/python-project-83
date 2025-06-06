@@ -8,6 +8,7 @@ deva:
 dev:
 	./build_dev.sh
 	uv run flask --debug --app page_analyzer:app run --port 8000
+	
 
 PORT ?= 8000
 start:
@@ -21,8 +22,11 @@ build:
 test-coverage:
 	uv run pytest --cov=page_analyzer --cov-report xml
 
-lint:
+lintf:
 	uv run flake8 page_analyzer
+
+lintr:
+	uv run ruff check page_analyzer
 
 save:
 	git add --all

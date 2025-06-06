@@ -1,5 +1,5 @@
 import os
-from bs4 import BeautifulSoup
+
 import psycopg2
 from dotenv import load_dotenv
 from flask import (
@@ -13,7 +13,11 @@ from flask import (
 )
 
 from page_analyzer.repository import UrlRepository
-from page_analyzer.validator import validate, get_response
+from page_analyzer.supportive_functions import (
+    get_response,
+    make_check,
+    validate,
+)
 
 app = Flask(__name__)
 
@@ -45,7 +49,6 @@ def url_show(url_id):
     messages = get_flashed_messages(with_categories=True)
     url = repo.find_url(url_id)
     url_checks = repo.get_checks_content(url_id)
-    #debug('url checkssss %s', url_checks)
     if url is None:
         return render_template("not_found.html")
     return render_template("show.html",
@@ -63,45 +66,30 @@ def urls_post():
         url = {"name": normal_url}
         exist_id = repo.exist_url(url)
         if exist_id:
-            #debug("test urrrl exist %s", url)
             flash("Страница уже существует", "info")
-            return redirect(url_for("url_show", url_id=exist_id))
-        repo.save_url(url)
-        url_id = url["id"]
-        flash("Страница успешно добавлена", "success")
-        return redirect(url_for("url_show", url_id=url_id))
+            url_id = exist_id
+        else:
+            repo.save_url(url)
+            url_id = url["id"]
+            flash("Страница успешно добавлена", "success")
+        return redirect(url_for("url_show", url_id=url_id), code=302)
     flash("Некорректный URL", "error")
-    return render_template("index.html", url={"name": data["url"]})
+    return render_template("index.html", url={"name": data["url"]}), 422
 
 
 @app.route('/urls/<int:url_id>/checks', methods=['POST'])
 def url_checking(url_id):
     url_check = {'url_id': url_id,
-    					   'status_code': '',
-    					   'title': '',
-    					   'h1': '',
-    					   'description': ''}
+                        'status_code': '',
+                        'title': '',
+                        'h1': '',
+                        'description': ''}
     url = repo.find_url(url_id)
     url_response = get_response(url)
     if url_response:
-        url_check['status_code'] = url_response.status_code
-        html_doc = url_response.text
-        soup = BeautifulSoup(html_doc, 'html.parser')
-        url_title = soup.title
-        if url_title:
-            url_check['title'] = url_title.string
-        url_h1 = soup.h1
-        if url_h1:
-            url_check['h1'] = url_h1.string
-        url_meta_tags = soup.find_all('meta')
-        if url_meta_tags:
-            for url_meta_tag in url_meta_tags:
-                url_meta_tag_attrs = url_meta_tag.attrs
-                if set(['name', 'content']).issubset(set(url_meta_tag_attrs.keys())):
-                    if url_meta_tag_attrs['name'] == 'description':
-                        url_check['description'] = url_meta_tag_attrs['content']
+        make_check(url_check, url_response)
         repo.save_check(url_check)
         flash("Страница успешно проверена", "success")
     else:
         flash("Произошла ошибка при проверке", "error")
-    return redirect(url_for("url_show", url_id=url_id))
+    return redirect(url_for("url_show", url_id=url_id), code=302)
