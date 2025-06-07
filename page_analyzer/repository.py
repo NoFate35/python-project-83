@@ -17,7 +17,6 @@ class UrlRepository:
                         "FROM urls LEFT JOIN url_checks AS checks "
                         "ON urls.id = checks.url_id "
                         "ORDER BY id DESC, last_date DESC;")
-            conn.close()
             return [dict(row) for row in cur]
 
     def exist_url(self, url):
@@ -25,14 +24,12 @@ class UrlRepository:
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
             cur.execute("SELECT * FROM urls WHERE name = %s", (name,))
             row = cur.fetchone()
-            conn.close()
             return dict(row)["id"] if row else None
 
     def find_url(self, url_id):
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
             cur.execute("SELECT * FROM urls WHERE id = %s", (url_id,))
             row = cur.fetchone()
-            conn.close()
             return dict(row) if row else None
 
     def save_url(self, url):
@@ -48,7 +45,7 @@ class UrlRepository:
             url_id = cur.fetchone()[0]
             url["id"] = url_id
         self.conn.commit()
-        conn.close()
+
 
     def save_check(self, url_check):
         with self.conn.cursor() as cur:
@@ -65,14 +62,13 @@ class UrlRepository:
                 ),
             )
         self.conn.commit()
-        conn.close()
+
 
     def get_checks_content(self, url_id):
         with self.conn.cursor(cursor_factory=DictCursor) as cur:
             cur.execute("SELECT *"
                         "FROM url_checks WHERE url_id = %s "
                         "ORDER BY id DESC;", (url_id,))
-            conn.close()
             return [dict(row) for row in cur]
 
     def clear_tables(self):
@@ -82,4 +78,3 @@ class UrlRepository:
                 "TRUNCATE url_checks RESTART IDENTITY;"
             )
         self.conn.commit()
-        conn.close()

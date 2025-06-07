@@ -26,12 +26,14 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 DATABASE_URL = os.getenv("DATABASE_URL")
-conn = psycopg2.connect(DATABASE_URL)
 
-repo = UrlRepository(conn)
+
+
 app.logger.setLevel("DEBUG")
 debug = app.logger.debug
 
+conn = psycopg2.connect(DATABASE_URL)
+repo = UrlRepository(conn)
 
 @app.route("/")
 def get_index():
@@ -41,6 +43,7 @@ def get_index():
 @app.route("/urls")
 def urls_index():
     urls_checks = repo.get_url_content()
+    #conn.close()
     return render_template("urls.html", urls_checks=urls_checks)
 
 

@@ -3,6 +3,7 @@ from page_analyzer.app import repo
 from page_analyzer import app
 import responses
 
+
 @pytest.fixture()
 def test_app():
     test_app = app
@@ -10,7 +11,7 @@ def test_app():
         "TESTING": True,
     })
     repo.clear_tables()
-    print('CLEAR TABLES')
+    #print('CLEAR TABLES')
     yield test_app
     repo.clear_tables()
 
