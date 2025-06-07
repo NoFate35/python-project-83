@@ -1,5 +1,5 @@
 import pytest
-from page_analyzer.app import repo
+from page_analyzer.app import get_db_connection
 from page_analyzer import app
 import responses
 
@@ -10,10 +10,12 @@ def test_app():
     test_app.config.update({
         "TESTING": True,
     })
+    conn, repo = get_db_connection()
     repo.clear_tables()
     #print('CLEAR TABLES')
     yield test_app
     repo.clear_tables()
+    conn.close()
 
 
 

@@ -2,8 +2,9 @@ install:
 	uv sync
 	
 deva:
-	uv run flask --debug --app page_analyzer:app run --port 8000
 	./build_deva.sh
+	uv run flask --debug --app page_analyzer:app run --port 8000
+	
 
 dev:
 	./build_dev.sh

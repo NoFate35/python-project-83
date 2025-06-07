@@ -32,8 +32,14 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 app.logger.setLevel("DEBUG")
 debug = app.logger.debug
 
-conn = psycopg2.connect(DATABASE_URL)
-repo = UrlRepository(conn)
+#conn = psycopg2.connect(DATABASE_URL)
+#repo = UrlRepository(conn)
+
+def get_db_connection():
+	conn = psycopg2.connect(DATABASE_URL)
+	repo = UrlRepository(conn)
+	return conn, repo
+
 
 @app.route("/")
 def get_index():
@@ -42,16 +48,19 @@ def get_index():
 
 @app.route("/urls")
 def urls_index():
+    conn, repo = get_db_connection()
     urls_checks = repo.get_url_content()
-    #conn.close()
+    conn.close()
     return render_template("urls.html", urls_checks=urls_checks)
 
 
 @app.route("/urls/<int:url_id>")
 def url_show(url_id):
+    conn, repo = get_db_connection()
     messages = get_flashed_messages(with_categories=True)
     url = repo.find_url(url_id)
     url_checks = repo.get_checks_content(url_id)
+    conn.close()
     if url is None:
         return render_template("not_found.html")
     return render_template("show.html",
@@ -63,6 +72,7 @@ def url_show(url_id):
 
 @app.route("/urls", methods=["POST"])
 def urls_post():
+    conn, repo = get_db_connection()
     data = request.form.to_dict()
     normal_url = validate(data["url"])
     if normal_url:
@@ -75,6 +85,7 @@ def urls_post():
             repo.save_url(url)
             url_id = url["id"]
             flash("Страница успешно добавлена", "success")
+        conn.close()
         return redirect(url_for("url_show", url_id=url_id), code=302)
     flash("Некорректный URL", "error")
     return render_template("index.html", url={"name": data["url"]}), 422
@@ -82,6 +93,7 @@ def urls_post():
 
 @app.route('/urls/<int:url_id>/checks', methods=['POST'])
 def url_checking(url_id):
+    conn, repo = get_db_connection()
     url_check = {'url_id': url_id,
                         'status_code': '',
                         'title': '',
@@ -95,4 +107,5 @@ def url_checking(url_id):
         flash("Страница успешно проверена", "success")
     else:
         flash("Произошла ошибка при проверке", "error")
+    conn.close()
     return redirect(url_for("url_show", url_id=url_id), code=302)
