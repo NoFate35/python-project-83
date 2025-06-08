@@ -46,12 +46,15 @@ class UrlRepository:
             url["id"] = url_id
         self.conn.commit()
 
-
     def save_check(self, url_check):
         with self.conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) \
-                VALUES (%s, %s, %s, %s, %s, %s) RETURNING id",
+                "INSERT INTO url_checks (url_id,"
+                "status_code,"
+                "h1, title,"
+                "description,"
+                "created_at)"
+                "VALUES (%s, %s, %s, %s, %s, %s) RETURNING id",
                 (
                     url_check['url_id'],
                     url_check['status_code'],
@@ -62,7 +65,6 @@ class UrlRepository:
                 ),
             )
         self.conn.commit()
-
 
     def get_checks_content(self, url_id):
         with self.conn.cursor(cursor_factory=DictCursor) as cur:

@@ -28,12 +28,12 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 
-
 app.logger.setLevel("DEBUG")
 debug = app.logger.debug
 
-#conn = psycopg2.connect(DATABASE_URL)
-#repo = UrlRepository(conn)
+# conn = psycopg2.connect(DATABASE_URL)
+# repo = UrlRepository(conn)
+
 
 def get_db_connection():
 	conn = psycopg2.connect(DATABASE_URL)
