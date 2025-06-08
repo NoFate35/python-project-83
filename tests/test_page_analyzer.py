@@ -2,7 +2,7 @@ import pytest
 import responses
 
 from page_analyzer import app
-from page_analyzer.app import get_db_connection
+from page_analyzer.app import get_repository_connection
 
 
 @pytest.fixture()
@@ -11,12 +11,11 @@ def test_app():
     test_app.config.update({
         "TESTING": True,
     })
-    conn, repo = get_db_connection()
-    repo.clear_tables()
-    # print('CLEAR TABLES')
+    connection, repository = get_repository_connection()
+    repository.clear_tables()
     yield test_app
-    repo.clear_tables()
-    conn.close()
+    repository.clear_tables()
+    connection.close()
 
 
 @pytest.fixture()
@@ -24,19 +23,19 @@ def client(test_app):
     return test_app.test_client()
 
 
-def test_request_example(client):
+def test_main_template(client):
     response = client.get("/")
     assert '<h1 class="display-3">Анализатор страниц</h1>' in response.text
 
 
-def test_urls_index_post_error(client):
+def test_urls_add_wrong(client):
     response = client.post('/urls', data={
         "url": 'HttpS//Ya.ru'
     })
     assert "Некорректный URL" in response.text
     
 
-def test_urls_index_post(client):
+def test_urls_add(client):
     response = client.post('/urls', 
         data={"url": 'HttpS://Ya.ru'},
         follow_redirects=True)
@@ -48,7 +47,7 @@ def test_urls_index_post(client):
     assert "Страница уже существует" in response.text
 
 
-def test_checks_for_flash(client):
+def test_add_check(client):
     _ = client.post('/urls', 
         data={"url": 'HttpS://Ya.ru'},
         follow_redirects=True)
@@ -66,7 +65,7 @@ def test_urls_list(client):
 
 
 @responses.activate
-def test_checks(client):
+def test_check_structure(client):
     responses.add(
         responses.GET,
         'http://rightcheck.ru',
@@ -93,7 +92,6 @@ def test_checks(client):
         follow_redirects=True)
     wright_response = client.post('/urls/1/checks',
         follow_redirects=True)
-    # print("response.tttext", response.text.split())
     assert "200" in wright_response.text
     assert "yyyy" in wright_response.text
     assert "tatle" in wright_response.text
