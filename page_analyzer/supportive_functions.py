@@ -5,27 +5,29 @@ from bs4 import BeautifulSoup
 from validators import url as url_validate
 
 
-def validate(try_url):
+def validate(try_url: str) -> dict:
     url_object = urlparse(try_url)
     normalize_url = url_object._replace(path="",
                                         params="",
                                         query="",
                                         fragment="").geturl()
     if not url_validate(normalize_url):
-        return False
+        return None
     return normalize_url
 
 
-def get_response(url):
+def get_response(url: str) -> dict:
     try:
         response = requests.get(url['name'])
+        print("response", response)
         response.raise_for_status()
         return response
     except Exception:
+        
         return None
 
 
-def make_check(url_check, url_response):
+def make_check(url_check: dict, url_response: dict) -> None:
     url_check['status_code'] = url_response.status_code
     html_doc = url_response.text
     soup = BeautifulSoup(html_doc, 'html.parser')
