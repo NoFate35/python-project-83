@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from validators import url as url_validate
 
 
-def validate(try_url: str) -> dict:
+def validate(try_url: str) -> dict | None:
     url_object = urlparse(try_url)
     normalize_url = url_object._replace(path="",
                                         params="",
