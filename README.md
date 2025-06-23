@@ -18,3 +18,5 @@ The link to this project will be active for 25 days, starting from 06/13/2025:
 <a href="https://python-project-83-production-1113.up.railway.app">python-project-83-production-1113.up.railway.app</a>
 ### Purpose
 Page analyzer is a full-fledged application based on the Flask framework. Here the basic principles of building modern sites on the MVC architecture are worked out: work with routing, request handlers and a template engine, interaction with the database.
+### Description
+Page Analyzer – это сайт, который анализирует указанные страницы на SEO-пригодность по аналогии с PageSpeed Insights:
