@@ -12,9 +12,7 @@
 ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 
 # About project
-The link to this project will be available for 25 days, starting from 06/13/2025:
-
-<a href="https://python-project-83-production-1113.up.railway.app">Page Analyzer</a>
+The link to this training project will be available for 25 days, starting from 06/13/2025: <a href="https://python-project-83-production-1113.up.railway.app">Page Analyzer</a>
 ### Purpose
 Page analyzer is a full-fledged application based on the Flask framework. Here the basic principles of building modern sites on the MVC architecture are worked out: work with routing, request handlers and a template engine, interaction with the database.
 ### Description
