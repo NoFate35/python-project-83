@@ -20,3 +20,22 @@ Page analyzer is a full-fledged application based on the Flask framework. Here t
 <a href="https://python-project-83-production-1113.up.railway.app">Page Analyzer</a> – this is a website that analyzes the specified pages for SEO suitability, similar to <a href="https://pagespeed.web.dev/">PageSpeed Insights</a>:<p><img src="https://cdn2.hexlet.io/derivations/image/original/eyJpZCI6ImRiYzE2ZTNhYjgxMjI1NzdmMTM1ZDQzMjVkZmQ1YWJhLnBuZyIsInN0b3JhZ2UiOiJjYWNoZSJ9?signature=4874cc79b8e3f1a0288cb0d59b09b9129ee0ad591958711786ee0d4f5bad3f8a" title="" alt="Проект Хекслета Анализатор страниц" class="px-2 px-md-3 px-lg-4 px-xl-5 img-fluid" loading="lazy">
 <img src="https://cdn2.hexlet.io/derivations/image/original/eyJpZCI6ImM5Mzk5Y2MzY2ZkNWUzNTI0MTE4OTYwYTZkNzEyYWVkLnBuZyIsInN0b3JhZ2UiOiJjYWNoZSJ9?signature=508d9cc44a9cc3880c828c4775df02e09ec9224fe5e84f52325035cc891da4a2" title="" alt="Анализатор страниц" class="px-2 px-md-3 px-lg-4 px-xl-5 img-fluid" loading="lazy">
 <img src="https://cdn2.hexlet.io/derivations/image/original/eyJpZCI6IjE2NWRmOGYzYjM2NGUyMTNhOWU1M2E3ZDJmNGQwYjNmLnBuZyIsInN0b3JhZ2UiOiJjYWNoZSJ9?signature=79858c156ec370e5a4a8180a4e26d62a7aef546880d53a823df32cc4e1670a6c" title="" alt="Анализатор страниц" class="px-2 px-md-3 px-lg-4 px-xl-5 img-fluid" loading="lazy"></p>
+### Installation
+To work with the project must be installed:
+* the __uv__ project manager;
+* __postgresql__ with "py_flaskdb" database whith no password;
+```
+git clone https://github.com/NoFate35/python-project-83.git
+cd python-project-83
+uv sync
+
+make dev
+```
+__.env__ file consist of:
+```
+DATABASE_URL = 'postgresql:///py_flaskdb'
+SECRET_KEY = 'verysecretkeyyy'
+```
+make migrate
+make test
+```
