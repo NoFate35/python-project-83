@@ -36,6 +36,5 @@ git clone https://github.com/NoFate35/python-project-83.git
 cd python-project-83
 uv sync
 make dev
-```
 make test
 ```
