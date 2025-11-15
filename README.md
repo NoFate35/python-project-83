@@ -24,7 +24,7 @@ Page analyzer is a full-fledged application based on the Flask framework. Here t
 To work with the project must be installed:
 * the __uv__ project manager;
 * __postgresql__ with "py_flaskdb" database whith no password;
-__.env__ file consist of:
+  __.env__ file consist of:
 ```
 DATABASE_URL = 'postgresql:///py_flaskdb'
 SECRET_KEY = 'verysecretkeyyy'
