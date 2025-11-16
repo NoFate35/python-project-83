@@ -38,3 +38,4 @@ uv sync
 make dev
 make test
 ```
+URL to try: _http://ya.ru_
